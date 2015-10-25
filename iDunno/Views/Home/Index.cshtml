@@ -3,7 +3,6 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Home/_LayoutPage.cshtml";
 }
-
 <script type="text/javascript">
     $(document).ready(function () {
         if (navigator.geolocation) {
@@ -16,43 +15,39 @@
     });
 
 </script>
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     <div id="talkBar">
         <h2>Product Search</h2>
-    <label for="search"></label><input type="search" name="search" value="@(Model.SearchQuery ?? "")" />
-    <hr />  -->
-    <input type="hidden" id="queryID" value="@(Model.QueryID ?? "")" />
+        <label for="search"></label><input type="search" name="search" value="@(Model.SearchQuery ?? "")" />
+        <input type="hidden" id="queryID" value="@(Model.QueryID ?? "")" />
     </div>
     <div id="behindBar">this is some text</div>
-if (Model.QueryID != null)
-{
-    foreach (var et in Model.Items)
+    if (Model.QueryID != null)
     {
-        <br />
-        
-        <a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div class="productDisp"><p id="descript"> @et.Description <img src="@et.ImgUrl" /></p></div></a>
+        foreach (var et in Model.Items)
+        {
+            <br />
+
+            <a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div id="productDisp"><p id="descript"> @et.Description <img src="@et.ImgUrl" /></p></div></a>
+        }
     }
-}else
-{
-       
-        <hr />
+    else
+    {
         <h1>Recently viewed</h1>
         foreach (var et in Model.UserItems)
         {
-            <br /><a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div class="productDisp"><p id="descript">@et.Description <img src="@et.ImgUrl" /></p></div></a>
+            <br /><a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div id="productDisp"><p id="descript">@et.Description <img src="@et.ImgUrl" /></p></div></a>
 
         }
-    <h1>Popular items</h1>
-    <hr />
+        <h1>Popular items</h1>
+        <hr />
         if (Model.PopularItems != null)
         {
             foreach (var et in Model.PopularItemsView)
             {
-                <br /><a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div class="productDisp"><p id="descript">@et.Description <img src="@et.ImgUrl" /></p></div></a>
+                <br /><a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div id="productDisp"><p id="descript">@et.Description <img src="@et.ImgUrl" /></p></div></a>
 
             }
         }
