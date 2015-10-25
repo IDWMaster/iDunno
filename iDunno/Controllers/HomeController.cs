@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using iDunno.Models;
 using System.Threading.Tasks;
+using System.IO;
 namespace iDunno.Controllers
 {
     //Target Product API 
@@ -12,6 +13,14 @@ namespace iDunno.Controllers
 
     public class HomeController : Controller
     {
+        dynamic GetObject()
+        {
+            using (StreamReader mreader = new StreamReader(Request.InputStream))
+            {
+                return Newtonsoft.Json.JsonConvert.DeserializeObject(mreader.ReadToEnd());
+            }
+        }
+
         public async Task<ActionResult> ViewProduct(string Id, string SearchID)
         {
             iDunnoDB db = new iDunnoDB();
@@ -82,6 +91,14 @@ namespace iDunno.Controllers
             }
             screen.Items = items;
             return View(screen);
+        }
+
+
+        public async Task<ActionResult> Search()
+        {
+            dynamic obj = GetObject(); //Data from client
+            string query = obj.query.ToString();
+
         }
     }
 }
