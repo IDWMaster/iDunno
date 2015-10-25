@@ -46,8 +46,9 @@ namespace iDunno.Controllers
                 iDunnoDB db = new iDunnoDB();
                 await db.CreateUser(screen);
                 return RedirectToAction("Index");
-            } 
-            return View();
+            }
+            this.ModelState.Clear();
+            return RedirectToAction("Index");
 
         }
         [HttpGet]
@@ -65,8 +66,18 @@ namespace iDunno.Controllers
             {
                 return RedirectToAction("Index");   
             }
+            
             return View();
         }
+        /*[HttpGet]
+        public async Task<ActionResult> ActivatePopup()
+        {
+            iDunnoDB db = new iDunnoDB();
+            HomeScreen screen = new HomeScreen() { PopularItems = await db.GetTopProducts(), CurrentUser = await db.GetUserById((await db.getCurrentSession()).User) };
+            HomeView view = new HomeView(screen);
+            
+        }*/
+
         [HttpGet]
         // GET: Home
         public async Task<ActionResult> Index()
