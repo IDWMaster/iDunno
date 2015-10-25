@@ -41,7 +41,25 @@ namespace iDunno.Models
         public long ViewCount { get; set; }
     }
 
-
+    public class HomeView
+    {
+        public HomeView(HomeScreen screen)
+        {
+            Screen = screen;
+        }
+        public HomeScreen Screen { get; set; }
+        [Display(Name = "Popular items")]
+        public IEnumerable<TargetItem> PopularItems
+        {
+            get
+            {
+                return Screen.PopularItemsView;
+            }
+        }
+        [Display(Name ="Search")]
+        public string Search { get; set; }
+        
+    }
     public class HomeScreen
     {
         public IEnumerable<TargetItem> UserItems {

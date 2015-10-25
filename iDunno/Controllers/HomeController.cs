@@ -63,7 +63,7 @@ namespace iDunno.Controllers
         public async Task<ActionResult> Index()
         {
             iDunnoDB db = new iDunnoDB();
-            return View(new HomeScreen() { PopularItems = await db.GetTopProducts(), CurrentUser = await db.GetUserById((await db.getCurrentSession()).User) });
+            return View(new HomeView(new HomeScreen() { PopularItems = await db.GetTopProducts(), CurrentUser = await db.GetUserById((await db.getCurrentSession()).User) }));
         }
         [ValidateAntiForgeryToken]
         [HttpPost]

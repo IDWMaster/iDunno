@@ -1,13 +1,5 @@
 ﻿@model iDunno.Models.RegistrationScreen
 
-@{
-    ViewBag.Title = "Register";
-    Layout = "~/Views/Home/_LayoutPage.cshtml";
-}
-
-<h2>Register</h2>
-
-
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()

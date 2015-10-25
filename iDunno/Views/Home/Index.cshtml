@@ -1,58 +1,14 @@
-﻿@model iDunno.Models.HomeScreen
+﻿@model iDunno.Models.HomeView
+
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Home/_LayoutPage.cshtml";
 }
-<script type="text/javascript">
-    $(document).ready(function () {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function (position) {
-                var coords = { Latitude: position.coords.latitude, Longitude: position.coords.longitude };
-                $.get('/Home/Location?latitude=' + coords.Latitude + '&longitude=' + coords.Longitude);
 
-            });
-        }
-    });
+<h2>Target Searcher</h2>
 
-</script>
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    <div id="talkBar">
-        <h2>Product Search</h2>
-        <label for="search"></label><input type="search" name="search" value="@(Model.SearchQuery ?? "")" />
-        <input type="hidden" id="queryID" value="@(Model.QueryID ?? "")" />
-    </div>
-    <div id="behindBar">this is some text</div>
-    if (Model.QueryID != null)
-    {
-        foreach (var et in Model.Items)
-        {
-            <br />
-
-            <a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div id="productDisp"><p id="descript"> @et.Description <img src="@et.ImgUrl" /></p></div></a>
-        }
-    }
-    else
-    {
-        <h1>Recently viewed</h1>
-        foreach (var et in Model.UserItems)
-        {
-            <br /><a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div id="productDisp"><p id="descript">@et.Description <img src="@et.ImgUrl" /></p></div></a>
-
-        }
-        <h1>Popular items</h1>
-        <hr />
-        if (Model.PopularItems != null)
-        {
-            foreach (var et in Model.PopularItemsView)
-            {
-                <br /><a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div id="productDisp"><p id="descript">@et.Description <img src="@et.ImgUrl" /></p></div></a>
-
-            }
-        }
-    }
-
-
-
-}
+<div>
+    <h4>Products</h4>
+    <hr />
+    
+</div>
