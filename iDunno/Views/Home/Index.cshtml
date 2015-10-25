@@ -24,6 +24,17 @@
         <input type="hidden" id="queryID" value="@(Model.QueryID ?? "")" />
     </div>
     <div id="behindBar">this is some text</div>
+    if (Model.CurrentUser.Username == null)
+    {
+        <div>
+            <a href="@Url.Action("Login")">Login</a> | <a href="@Url.Action("Register")">Register</a>
+        </div>
+    }
+    else
+    {
+        <span>Welcome, @Model.CurrentUser.FirstName @Model.CurrentUser.LastName</span>
+    }
+
     if (Model.QueryID != null)
     {
         foreach (var et in Model.Items)
@@ -31,6 +42,7 @@
             <br />
 
             <a href="@Url.Action("ViewProduct", new { Id = et.Id, SearchID = Model.QueryID })"><div id="productDisp"><p id="descript"> @et.Description <img src="@et.ImgUrl" /></p></div></a>
+            
         }
     }
     else
@@ -53,6 +65,8 @@
         }
     }
 
+
+    
 
 
 }

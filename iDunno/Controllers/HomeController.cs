@@ -50,11 +50,16 @@ namespace iDunno.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(true)]
-        public ActionResult Login(LoginScreen screen)
+        public async Task<ActionResult> Login(LoginScreen screen)
         {
             if(this.ModelState.IsValid)
             {
-                return RedirectToAction("Index");   
+                iDunnoDB db = new iDunnoDB();
+                var session = await db.getCurrentSession();
+                var user = await db.LookupUser(screen.UserName);
+                session.User = user.Id;
+                await db.UpdateSession(session);
+                return RedirectToAction("Index");
             }
             return View();
         }

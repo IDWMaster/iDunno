@@ -253,6 +253,11 @@ namespace iDunno.Models
 
     public class iDunnoDB
     {
+        public async Task UpdateSession(SessionInformation session)
+        {
+            await db.GetCollection<SessionInformation>("sessions").ReplaceOneAsync(Builders<SessionInformation>.Filter.Eq(m => m.Id, session.Id),session);
+
+        }
         public async Task<UserInformation> GetUserById(BsonObjectId id)
         {
             return (await db.GetCollection<UserInformation>("users").Find(Builders<UserInformation>.Filter.Eq(m => m.Id, id)).ToListAsync()).First();
@@ -356,17 +361,25 @@ namespace iDunno.Models
         }
         public async Task CreateUser(RegistrationScreen screen)
         {
-            
+
+            string hostname = HttpContext.Current.Request.UserHostName;
+            var session = await getCurrentSession();
             using (RandomNumberGenerator mrand = RandomNumberGenerator.Create()) {
                 byte[] salt = new byte[32];
                 mrand.GetBytes(salt);
                 using (Rfc2898DeriveBytes mderive = new Rfc2898DeriveBytes(screen.Password,salt))
                 {
                     byte[] hash = mderive.GetBytes(32);
-                    UserInformation info = new UserInformation() { FirstName = screen.FirstName, LastName = screen.LastName, IpAddress = HttpContext.Current.Request.UserHostName, LastAccessTime = DateTime.Now };
+                    UserInformation info = await GetUserById(session.User);
+                    info.FirstName = screen.FirstName;
+                    info.LastName = screen.LastName;
+                    info.IpAddress = hostname;
+                    info.Username = screen.Username;
+                    info.LastAccessTime = DateTime.UtcNow;
                     info.Password = hash;
                     info.Salt = salt;
-                    await db.GetCollection<UserInformation>("users").InsertOneAsync(info);
+                    await db.GetCollection<UserInformation>("users").ReplaceOneAsync(Builders<UserInformation>.Filter.Eq(m=>m.Id,info.Id),info);
+
                 }
             }
 
