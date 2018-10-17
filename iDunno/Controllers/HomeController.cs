@@ -103,13 +103,5 @@ namespace iDunno.Controllers
             screen.Items = items;
             return View(screen);
         }
-
-
-        public async Task<ActionResult> Search()
-        {
-            dynamic obj = GetObject(); //Data from client
-            string query = obj.query.ToString();
-
-        }
     }
 }
